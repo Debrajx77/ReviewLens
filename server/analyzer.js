@@ -71,6 +71,15 @@ export async function analyzeWithGemini({ inputType, sourceText }) {
 
   if (!response.ok) {
     const detail = await response.text();
+
+    if (response.status === 503) {
+      const error = new Error(
+        "The AI service is temporarily busy. Please try again in a few seconds.",
+      );
+      error.status = 503;
+      throw error;
+    }
+
     throw new Error(
       `Gemini request failed (${response.status}): ${detail.slice(0, 240)}`,
     );

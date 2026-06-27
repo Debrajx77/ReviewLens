@@ -23,11 +23,15 @@ app.post("/api/analyze", async (request, response) => {
     const requestedType = request.body?.inputType || "auto";
 
     if (input.length < 20) {
-      return response.status(400).json({ error: "Paste more review text or enter a full product URL." });
+      return response
+        .status(400)
+        .json({ error: "Paste more review text or enter a full product URL." });
     }
 
     if (!["auto", "url", "reviews"].includes(requestedType)) {
-      return response.status(400).json({ error: "inputType must be auto, url, or reviews." });
+      return response
+        .status(400)
+        .json({ error: "inputType must be auto, url, or reviews." });
     }
 
     const source = await resolveSourceText(input, requestedType);
@@ -38,15 +42,22 @@ app.post("/api/analyze", async (request, response) => {
       id: shareId,
       inputType: source.inputType,
       inputPreview: source.inputPreview,
-      analysis
+      analysis,
     });
 
     response.json({
       shareId,
       reportUrl: `/report/${shareId}`,
-      analysis
+      analysis,
     });
   } catch (error) {
+    if (error.status === 503) {
+      return response.status(503).json({
+        error:
+          "The AI service is temporarily busy. Please try again in a few seconds.",
+      });
+    }
+
     response.status(500).json({ error: error.message || "Analysis failed." });
   }
 });
