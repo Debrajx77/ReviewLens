@@ -1,79 +1,279 @@
-# ReviewLens
+# 🚀 ReviewLens
 
-ReviewLens is a full-stack React + Express app that turns a product URL or pasted customer reviews into a structured AI shopping report.
+> **AI-powered product review analysis platform built with React, Express, and Google Gemini AI.**
 
-## Features
+ReviewLens transforms raw customer reviews into actionable insights in seconds. Simply paste a product URL or a block of customer reviews, and ReviewLens generates an AI-powered report including sentiment analysis, key themes, strengths, weaknesses, and an overall buying recommendation.
 
-- Gemini-powered JSON analysis with a strict system prompt
-- 3-sentence TL;DR summary
-- Positive / neutral / negative sentiment percentages with themes
-- Top 3 praised and top 3 complained-about lists
-- 1-10 buy verdict with one-line justification
-- Edge-case handling for sparse reviews, non-English input, noisy product pages, and fake-review signals
-- Copy report button
-- Shareable report links using short UUIDs stored in SQLite
+<p align="center">
+  <img src="https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react" />
+  <img src="https://img.shields.io/badge/Vite-6-646CFF?style=for-the-badge&logo=vite" />
+  <img src="https://img.shields.io/badge/Express.js-5-000000?style=for-the-badge&logo=express" />
+  <img src="https://img.shields.io/badge/TailwindCSS-3-38BDF8?style=for-the-badge&logo=tailwindcss" />
+  <img src="https://img.shields.io/badge/Google-Gemini_AI-4285F4?style=for-the-badge&logo=google" />
+  <img src="https://img.shields.io/badge/Vercel-Deployed-black?style=for-the-badge&logo=vercel" />
+</p>
 
-## Stack
+---
 
-- Frontend: React, Vite, Tailwind CSS, lucide-react
-- Backend: Node.js, Express
-- AI: Google Gemini REST API
-- DB: SQLite file powered by `sql.js`
+## 🌐 Live Demo
 
-## Local Setup
+**Application:** https://review-lens-six.vercel.app/
+
+---
+
+## ✨ Features
+
+- 🤖 AI-powered review analysis using Google Gemini
+- 📄 Three-sentence TL;DR summary
+- 😊 Sentiment breakdown (Positive / Neutral / Negative)
+- ⭐ Top praised product features
+- ⚠️ Most common customer complaints
+- 📊 Overall Buy Verdict (1–10)
+- 🏷️ Key discussion themes
+- 📋 Copy report to clipboard
+- 🔗 Shareable report links
+- 🌍 Automatic language detection
+- 🚫 Spam & duplicate review handling
+- 📱 Fully responsive modern UI
+- ⚡ Fast serverless API deployment
+
+---
+
+# 📸 Screenshots
+
+> Replace these with actual screenshots after deployment.
+
+| Home | Analysis Dashboard |
+|------|--------------------|
+| ![](screenshots/home.png) | ![](screenshots/dashboard.png) |
+
+---
+
+# 🏗️ Architecture
+
+```
+                User Input
+                     │
+     ┌───────────────┴───────────────┐
+     │                               │
+ Product URL                 Customer Reviews
+     │                               │
+     └───────────────┬───────────────┘
+                     │
+             Data Processing
+                     │
+      Language Detection & Cleanup
+                     │
+            Google Gemini AI
+                     │
+          Structured JSON Response
+                     │
+        Interactive Results Dashboard
+```
+
+---
+
+# 🛠️ Tech Stack
+
+## Frontend
+
+- React 19
+- Vite
+- Tailwind CSS
+- JavaScript (ES Modules)
+- Lucide React
+
+## Backend
+
+- Node.js
+- Express.js
+- Google Gemini API
+- REST API
+
+## Database
+
+- SQL.js (SQLite in development)
+
+## Deployment
+
+- Vercel (Frontend + Serverless API)
+
+---
+
+# 📊 AI Analysis Includes
+
+Every analysis contains:
+
+- Three-line summary
+- Sentiment percentages
+- Key discussion themes
+- Top 3 praised features
+- Top 3 customer complaints
+- Buy score (1–10)
+- One-line buying recommendation
+
+---
+
+# 🚀 Getting Started
+
+## 1. Clone the repository
+
+```bash
+git clone https://github.com/yourusername/ReviewLens.git
+```
+
+```bash
+cd ReviewLens
+```
+
+---
+
+## 2. Install dependencies
 
 ```bash
 npm install
-cp .env.example .env
 ```
 
-Set `GEMINI_API_KEY` in `.env`.
+---
+
+## 3. Create environment variables
+
+Create a `.env.local` file:
+
+```env
+GEMINI_API_KEY=YOUR_GEMINI_API_KEY
+CLIENT_ORIGIN=http://localhost:5173
+```
+
+> Get your API key from **Google AI Studio**.
+
+---
+
+## 4. Run the development server
 
 ```bash
 npm run dev
 ```
 
-Open the Vite URL, usually `http://127.0.0.1:5173`.
+The application will be available at:
 
-The backend runs on `http://127.0.0.1:8787`. If `GEMINI_API_KEY` is not set, ReviewLens returns a clearly flagged local demo analysis so the UI can still be tested.
+Frontend
 
-## API
-
-`POST /api/analyze`
-
-```json
-{
-  "inputType": "reviews",
-  "input": "Paste reviews here..."
-}
+```
+http://localhost:5173
 ```
 
-`inputType` can be `reviews`, `url`, or `auto`.
+Backend
 
-`GET /api/reports/:id`
-
-Returns a saved shared report.
-
-## Deployment Notes
-
-This repo includes `vercel.json` and `api/index.js` for Vercel. Add these environment variables in Vercel:
-
-- `GEMINI_API_KEY`
-- `GEMINI_MODEL` optional, defaults to `gemini-1.5-flash`
-- `SQLITE_PATH` optional
-
-Vercel serverless storage is ephemeral. For a production-grade share-link database, switch the small persistence layer in `server/db.js` to Supabase or another hosted database. The current SQLite setup is ideal for local development and lightweight demos.
-
-## GitHub and Vercel Publishing
-
-This workspace does not include an authenticated GitHub CLI or Vercel CLI session. To publish from your machine:
-
-```bash
-git init
-git add .
-git commit -m "Build ReviewLens full-stack app"
-gh repo create reviewlens --public --source=. --remote=origin --push
-vercel --prod
+```
+http://localhost:3001
 ```
 
-If `gh` or `vercel` is not installed, create the repo and project in their web dashboards and connect this folder.
+---
+
+# 📂 Project Structure
+
+```
+ReviewLens
+│
+├── api/                # Serverless API entry
+├── public/
+├── server/
+│   ├── analyzer.js
+│   ├── app.js
+│   ├── db.js
+│   ├── prompt.js
+│   ├── source.js
+│   └── index.js
+│
+├── src/
+│   ├── components/
+│   ├── pages/
+│   ├── hooks/
+│   └── assets/
+│
+├── package.json
+└── vercel.json
+```
+
+---
+
+# 🔐 Environment Variables
+
+| Variable | Description |
+|----------|-------------|
+| `GEMINI_API_KEY` | Google Gemini API Key |
+| `CLIENT_ORIGIN` | Allowed frontend origin |
+
+---
+
+# 🚀 Deployment
+
+This project is deployed on **Vercel**.
+
+To deploy your own copy:
+
+1. Fork this repository
+2. Import the repository into Vercel
+3. Add the required environment variables
+4. Deploy
+
+---
+
+# 💡 Challenges Solved
+
+During development, the following engineering challenges were addressed:
+
+- Secure API key management
+- Serverless deployment on Vercel
+- AI prompt engineering for structured JSON output
+- Handling invalid and spam reviews
+- Responsive dashboard design
+- Shareable report generation
+- Error handling for AI service failures
+
+---
+
+# 🔮 Future Improvements
+
+- User authentication
+- Saved analysis history
+- PDF export
+- CSV export
+- Product comparison
+- Team workspaces
+- Analytics dashboard
+- Streaming AI responses
+- Dark mode customization
+
+---
+
+# 👨‍💻 Author
+
+**Debraj Sarkar**
+
+GitHub: https://github.com/Debrajx77
+
+LinkedIn: https://linkedin.com/in/your-linkedin
+
+Portfolio: https://your-portfolio.com
+
+---
+
+# 📜 License
+
+This project is licensed under the MIT License.
+
+---
+
+## ⭐ Support
+
+If you found this project useful, please consider giving it a ⭐ on GitHub.
+
+It helps support future development and makes the project easier for others to discover.
+
+---
+
+<p align="center">
+Built with ❤️ using React, Express, Tailwind CSS and Google Gemini AI.
+</p>
