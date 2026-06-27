@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import initSqlJs from "sql.js";
 
-const defaultPath = path.join(process.cwd(), "work", "reviewlens.sqlite");
+const defaultPath = "/tmp/reviewlens.sqlite";
 const dbPath = process.env.SQLITE_PATH || defaultPath;
 
 let dbPromise;
@@ -15,7 +15,8 @@ async function openDb() {
   ensureFolder();
 
   const SQL = await initSqlJs({
-    locateFile: (file) => path.join(process.cwd(), "node_modules", "sql.js", "dist", file)
+    locateFile: (file) =>
+      path.join(process.cwd(), "node_modules", "sql.js", "dist", file),
   });
 
   const bytes = fs.existsSync(dbPath) ? fs.readFileSync(dbPath) : undefined;
@@ -54,7 +55,13 @@ export async function saveReport({ id, inputType, inputPreview, analysis }) {
   db.run(
     `INSERT INTO reports (id, created_at, input_type, input_preview, analysis_json)
      VALUES (?, ?, ?, ?, ?)`,
-    [id, new Date().toISOString(), inputType, inputPreview, JSON.stringify(analysis)]
+    [
+      id,
+      new Date().toISOString(),
+      inputType,
+      inputPreview,
+      JSON.stringify(analysis),
+    ],
   );
 
   persist(db);
@@ -76,14 +83,15 @@ export async function getReport(id) {
       return null;
     }
 
-    const [reportId, createdAt, inputType, inputPreview, analysisJson] = statement.get();
+    const [reportId, createdAt, inputType, inputPreview, analysisJson] =
+      statement.get();
 
     return {
       id: reportId,
       createdAt,
       inputType,
       inputPreview,
-      analysis: JSON.parse(analysisJson)
+      analysis: JSON.parse(analysisJson),
     };
   } finally {
     statement.free();
