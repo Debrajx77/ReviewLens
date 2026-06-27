@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.env
+.env.local
+work/*.sqlite
+work/*.sqlite-*
+work/*.log
+work/*.err
+.vercel/

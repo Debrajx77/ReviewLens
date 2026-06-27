@@ -1,0 +1,30 @@
+{
+  "name": "reviewlens",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "client": "vite --host 127.0.0.1",
+    "server": "node server/index.js",
+    "dev": "concurrently -n api,web -c cyan,green \"npm run server\" \"npm run client\"",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "start": "node server/index.js"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "^5.0.0",
+    "autoprefixer": "^10.4.21",
+    "concurrently": "^9.2.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "lucide-react": "^0.468.0",
+    "postcss": "^8.5.6",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "sql.js": "^1.13.0",
+    "tailwindcss": "^3.4.17",
+    "vite": "^6.0.7"
+  },
+  "devDependencies": {}
+}
